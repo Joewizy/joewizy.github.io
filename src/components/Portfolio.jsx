@@ -422,36 +422,42 @@ export default function Portfolio() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <SkillGroup
               title="Smart Contract Development"
-              skills={["Solidity", "Foundry", "EVM", "Rust", "Move"]}
+              skills={["Solidity", "Rust", "Move", "Cairo", "Foundry", "EVM", "Hardhat", "Anvil"]}
               color="#00C896"
               index={0}
             />
             <SkillGroup
               title="Security & Auditing"
-              skills={["Security Audits", "Vulnerability Analysis", "CTF Competitions", "Slither", "Echidna", "Aderyn", "Foundry Fuzz"]}
+              skills={["Slither", "Echidna", "Aderyn", "Certora"]}
               color="#FF6B35"
               index={1}
             />
             <SkillGroup
-              title="Development Tools"
-              skills={["Hardhat", "Anvil", "Cast", "EthersJs", "Web3Js"]}
+              title="Multi-Chain Ecosystem"
+              skills={["Ethereum", "Solana", "Sui", "Aptos", "Stellar", "Starknet", "zkSync",]}
               color="#00C896"
               index={2}
             />
             <SkillGroup
-              title="DevOps & Infrastructure"
-              skills={["AWS", "CI/CD", "Tenderly", "The Graph", "Node.js"]}
+              title="Backend & Infrastructure"
+              skills={["Node.js", "PostgreSQL", "Docker", "GraphQL", "Supabase", "AWS", "CI/CD"]}
               color="#FF6B35"
               index={3}
             />
             <SkillGroup
               title="Frontend Engineering"
-              skills={["Next.js", "React", "TypeScript", "Tailwind CSS"]}
+              skills={["Next.js", "React", "TypeScript", "Tailwind"]}
               color="#00C896"
               index={4}
+            />
+            <SkillGroup
+              title="Monitoring & DevOps"
+              skills={["Tenderly", "The Graph", "Dune", "GitHub Actions"]}
+              color="#FF6B35"
+              index={5}
             />
           </div>
         </div>
@@ -734,19 +740,21 @@ function SkillGroup({ title, skills, color, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="p-6 border border-[#E8E4DC] rounded-xl bg-white/80"
+      className="p-5 border border-[#E8E4DC] rounded-xl bg-white/80"
     >
       <h3 className="font-syne font-bold text-lg mb-4" style={{ color }}>
         {title}
       </h3>
-      <div className="space-y-2">
+      <div className="flex flex-wrap gap-2">
         {skills.map((skill) => (
-          <div
+          <span
             key={skill}
-            className="px-3 py-2 bg-[#F7F5F0] border border-[#E8E4DC] rounded-lg text-sm hover:border-[#00C896] transition-colors"
+            className="px-3 py-1.5 bg-[#F7F5F0] border border-[#E8E4DC] 
+            rounded-full text-sm hover:border-[#00C896] hover:text-[#00C896] 
+            transition-colors cursor-default"
           >
             {skill}
-          </div>
+          </span>
         ))}
       </div>
     </motion.div>
