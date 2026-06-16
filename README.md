@@ -1,16 +1,67 @@
-# React + Vite
+# Joseph Gimba — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio site for Joseph Gimba (Blockchain & Backend Engineer).
+Live at **https://joewizy.github.io/**
 
-Currently, two official plugins are available:
+## Tech stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** + **Vite** (build tool / dev server)
+- **Tailwind CSS** (styling) via PostCSS + Autoprefixer
+- **Framer Motion** (animations)
+- **lucide-react** (icons)
+- **gh-pages** (deployment to GitHub Pages)
 
-## React Compiler
+## Local development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install      # install dependencies
+npm run dev      # start the Vite dev server (hot reload)
+npm run lint     # run ESLint
+npm run build    # production build into dist/
+npm run preview  # preview the production build locally
+```
 
-## Expanding the ESLint configuration
+## Deployment
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The site is hosted on **GitHub Pages**, served from the **`gh-pages` branch** (root).
+
+To deploy, just run:
+
+```bash
+npm run deploy
+```
+
+`predeploy` runs `vite build` automatically before `deploy`, so the freshly
+compiled `dist/` folder is always what gets published — you never have to
+remember to build first.
+
+### ⚠️ Important: never push source to `gh-pages`
+
+GitHub Pages must serve the **compiled `dist/` output**, NOT the raw source.
+If the `gh-pages` branch ever contains `src/main.jsx` and an `index.html` with
+`<script src="/src/main.jsx">`, the site will load **blank** — browsers can't
+run JSX directly.
+
+- ✅ Deploy only with `npm run deploy` (publishes `dist/` via the `gh-pages` tool).
+- ❌ Never run `git push origin main:gh-pages` or push source onto `gh-pages`.
+- A correct `gh-pages` branch contains: `index.html`, `assets/index-*.js`,
+  `assets/index-*.css`, `favicon.png`.
+
+If the live site breaks, confirm in **Settings → Pages → Source** that it's set
+to the **`gh-pages` branch (root)**.
+
+## Project structure
+
+```
+index.html            # HTML entry (dev) — references /src/main.jsx
+src/
+  main.jsx            # React entry point
+  App.jsx
+  components/
+    Portfolio.jsx     # main portfolio component
+  index.css           # Tailwind directives + global styles
+public/               # static assets copied as-is (favicon, etc.)
+vite.config.js        # Vite config (base: '/')
+tailwind.config.js
+dist/                 # build output (published to gh-pages — not committed to main)
+```
