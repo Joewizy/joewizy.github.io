@@ -226,7 +226,7 @@ export default function Portfolio() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          {/* Swap Chain */}
+          {/* Rail Glide */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
