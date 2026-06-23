@@ -238,7 +238,7 @@ export default function Portfolio() {
             <div className="relative flex items-start justify-between gap-4 mb-3">
               <div className="flex-1 min-w-0">
                 <h3 className="font-syne font-bold text-2xl sm:text-3xl mb-1">
-                  Swap Chain
+                  Railglide
                 </h3>
                 <p className="text-[#F7F5F0]/60">
                   AI-routed stablecoin transfers — describe it in plain
@@ -255,7 +255,7 @@ export default function Portfolio() {
 
             <div className="relative flex flex-wrap gap-3 mt-auto">
               <a
-                href="https://swapchain.vercel.app"
+                href="https://railglide.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-2 bg-[#00C896] text-[#1A1A1A] rounded-lg font-medium hover:bg-[#00C896]/90 transition-colors flex items-center gap-2 text-sm"
