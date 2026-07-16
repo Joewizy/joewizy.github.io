@@ -374,8 +374,8 @@ export default function Portfolio() {
             />
             <ProjectCard
               title="SolVault ERC-4626"
-              description="ERC-4626 tokenized vault implementation on EVM. Standardized deposit/withdraw/redeem interface with automated yield accounting and position tracking."
-              tags={["Solidity", "ERC-4626", "Vaults", "Rust"]}
+              description="ERC-4626 tokenized vault implementation on Solana. Standardized deposit/withdraw/redeem interface with automated yield accounting and position tracking. Live on Solana."
+              tags={["Solana", "Anchor", "Vaults", "Rust"]}
               liveUrl="https://solvault-five.vercel.app/"
               githubUrl="https://github.com/Joewizy/solvault-4626"
               index={8}
