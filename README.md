@@ -1,67 +1,63 @@
 # Joseph Gimba — Portfolio
 
-Personal portfolio site for Joseph Gimba (Blockchain & Backend Engineer).
-Live at **https://joewizy.github.io/**
+My personal site. Software engineer working on backends and smart contracts.
 
-## Tech stack
+Live at https://joewizy.github.io/
 
-- **React 19** + **Vite** (build tool / dev server)
-- **Tailwind CSS** (styling) via PostCSS + Autoprefixer
-- **Framer Motion** (animations)
-- **lucide-react** (icons)
-- **gh-pages** (deployment to GitHub Pages)
+## Stack
+
+- React 19 + Vite
+- Tailwind CSS (via PostCSS)
+- Framer Motion for animations
+- lucide-react for icons
+- gh-pages for deployment
+
+The hero portrait is an interactive ASCII canvas that samples an image at
+`public/portraits/` and redraws it as characters. The project carousel and the
+rest of the layout are plain React.
 
 ## Local development
 
 ```bash
 npm install      # install dependencies
-npm run dev      # start the Vite dev server (hot reload)
-npm run lint     # run ESLint
+npm run dev      # start the dev server with hot reload
 npm run build    # production build into dist/
-npm run preview  # preview the production build locally
+npm run preview  # preview the production build
+npm run lint     # run ESLint
 ```
 
 ## Deployment
 
-The site is hosted on **GitHub Pages**, served from the **`gh-pages` branch** (root).
-
-To deploy, just run:
+Hosted on GitHub Pages, served from the `gh-pages` branch. To ship:
 
 ```bash
 npm run deploy
 ```
 
-`predeploy` runs `vite build` automatically before `deploy`, so the freshly
-compiled `dist/` folder is always what gets published — you never have to
-remember to build first.
+`predeploy` runs `vite build` first, so `deploy` always publishes a fresh
+`dist/`. `main` holds the source; `gh-pages` holds the compiled output.
 
-### ⚠️ Important: never push source to `gh-pages`
+One gotcha for `username.github.io` repos: Pages defaults to serving from
+`main`, but the build lands on `gh-pages`. Set Settings → Pages → Source to the
+`gh-pages` branch (root) once, or the live site will render blank because the
+browser can't run JSX from source.
 
-GitHub Pages must serve the **compiled `dist/` output**, NOT the raw source.
-If the `gh-pages` branch ever contains `src/main.jsx` and an `index.html` with
-`<script src="/src/main.jsx">`, the site will load **blank** — browsers can't
-run JSX directly.
-
-- ✅ Deploy only with `npm run deploy` (publishes `dist/` via the `gh-pages` tool).
-- ❌ Never run `git push origin main:gh-pages` or push source onto `gh-pages`.
-- A correct `gh-pages` branch contains: `index.html`, `assets/index-*.js`,
-  `assets/index-*.css`, `favicon.png`.
-
-If the live site breaks, confirm in **Settings → Pages → Source** that it's set
-to the **`gh-pages` branch (root)**.
-
-## Project structure
+## Structure
 
 ```
-index.html            # HTML entry (dev) — references /src/main.jsx
+index.html                  # entry, loads /src/main.jsx and the fonts
 src/
-  main.jsx            # React entry point
+  main.jsx                  # React entry point
   App.jsx
+  index.css                 # Tailwind + design tokens and small components
   components/
-    Portfolio.jsx     # main portfolio component
-  index.css           # Tailwind directives + global styles
-public/               # static assets copied as-is (favicon, etc.)
-vite.config.js        # Vite config (base: '/')
+    Portfolio.jsx           # the whole page
+    AsciiPortrait.jsx       # interactive ASCII portrait (canvas)
+    Spotlight.jsx           # project screenshot carousel
+    Typewriter.jsx          # types the name in the hero
+public/
+  portraits/                # source image for the ASCII portrait
+  projects/                 # carousel screenshots
+vite.config.js              # base: '/'
 tailwind.config.js
-dist/                 # build output (published to gh-pages — not committed to main)
 ```
