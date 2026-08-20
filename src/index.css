@@ -2,8 +2,184 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #0b0f14;
+  --bg-2: #10161d;
+  --bg-3: #141c25;
+  --line: #1e2833;
+  --fg: #e6edf3;
+  --dim: #8b97a6;
+  --accent: #56e1c4;
+  --accent-soft: rgba(86, 225, 196, 0.1);
+  --accent-line: rgba(86, 225, 196, 0.32);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: #04120e;
+}
+
+/* Faint dotted grid + a soft glow behind the hero */
+.page-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(circle at 70% 8%, #000 0%, transparent 62%);
+}
+
+.hero-glow::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -8%;
+  width: 46rem;
+  height: 46rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(86, 225, 196, 0.14), transparent 62%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 0;
+}
+
 @layer base {
-  input, textarea, select, button {
+  input,
+  textarea,
+  select,
+  button {
     @apply outline-none focus:outline-none;
+  }
+}
+
+@layer utilities {
+  .f-display {
+    font-family: var(--font-display);
+  }
+  .f-mono {
+    font-family: var(--font-mono);
+  }
+  .f-body {
+    font-family: var(--font-body);
+  }
+}
+
+/* Mono eyebrow used above section headings, e.g. "/ about" */
+.section-label {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+/* Blinking terminal cursor after the typed name */
+.cursor {
+  color: var(--accent);
+  font-weight: 400;
+  margin-left: 2px;
+  animation: blink 1.05s step-end infinite;
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.pulse-dot {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.bounce-icon {
+  animation: bounce 1.4s infinite;
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(-20%);
+  }
+  50% {
+    transform: translateY(20%);
+  }
+}
+
+/* Folder-style project card */
+.folder-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.folder-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent-line);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.9);
+}
+
+/* Vertical tab list for experience */
+.tab-btn {
+  font-family: var(--font-mono);
+  color: var(--dim);
+  font-size: 0.85rem;
+  text-align: left;
+  padding: 0.6rem 1.1rem;
+  border-left: 2px solid var(--line);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.tab-btn--active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+@media (max-width: 767px) {
+  .tab-btn {
+    border-left: none;
+    border-bottom: 2px solid var(--line);
+  }
+  .tab-btn--active {
+    border-bottom-color: var(--accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -1,810 +1,599 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import {
   Github,
   Linkedin,
   Twitter,
-  Send,
-  ExternalLink,
+  PenLine,
+  Mail,
+  ArrowUpRight,
+  Folder,
   ChevronDown,
   Menu,
   X,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import AsciiPortrait from "./AsciiPortrait";
+import Typewriter from "./Typewriter";
+import Spotlight from "./Spotlight";
+
+const NAV = [
+  ["about", "about"],
+  ["stack", "stack"],
+  ["work", "work"],
+  ["now", "now"],
+  ["experience", "experience"],
+  ["contact", "contact"],
+];
+
+const reveal = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.55, ease: "easeOut" },
+};
 
 export default function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollToSection = (id) => {
-    if (typeof document !== "undefined") {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    }
-    setMobileMenuOpen(false);
+  const go = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
   };
 
   return (
-    <div className="bg-[#F7F5F0] text-[#1A1A1A] min-h-screen font-dm-mono">
-      {/* Navbar */}
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-[#F7F5F0]/80 backdrop-blur-md shadow-sm border-b border-[#E8E4DC]"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="font-syne font-bold text-xl">JG</div>
+    <div className="page-bg relative min-h-screen bg-[#0b0f14] text-[#e6edf3]">
+      <div className="relative z-10">
+        {/* ── Nav ─────────────────────────────────────────── */}
+        <nav
+          className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+            scrolled
+              ? "border-b border-[#1e2833] bg-[#0b0f14]/80 backdrop-blur-md"
+              : "border-b border-transparent"
+          }`}
+        >
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
+            <button onClick={() => go("top")} className="f-display text-lg font-bold tracking-tight">
+              Joseph <span className="text-[#56e1c4]">Gimba</span>
+            </button>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex gap-8 text-sm">
+            <div className="hidden items-center gap-6 md:flex">
+              {NAV.map(([id, label]) => (
+                <button
+                  key={id}
+                  onClick={() => go(id)}
+                  className="f-mono text-[0.8rem] text-[#8b97a6] transition-colors hover:text-[#56e1c4]"
+                >
+                  {label}
+                </button>
+              ))}
+              <div className="mx-1 h-4 w-px bg-[#1e2833]" />
+              <div className="flex items-center gap-4 text-[#8b97a6]">
+                <a href="https://github.com/Joewizy" target="_blank" rel="noreferrer" className="transition-colors hover:text-[#56e1c4]" aria-label="GitHub"><Github className="h-[18px] w-[18px]" /></a>
+                <a href="https://www.linkedin.com/in/joseph-gimba-45b915306/" target="_blank" rel="noreferrer" className="transition-colors hover:text-[#56e1c4]" aria-label="LinkedIn"><Linkedin className="h-[18px] w-[18px]" /></a>
+              </div>
+            </div>
+
             <button
-              onClick={() => scrollToSection("projects")}
-              className="hover:text-[#00C896] transition-colors"
+              onClick={() => setMenuOpen((o) => !o)}
+              className="rounded-md p-1.5 text-[#e6edf3] transition-colors hover:bg-[#141c25] md:hidden"
+              aria-label="Menu"
             >
-              Projects
-            </button>
-            <button
-              onClick={() => scrollToSection("skills")}
-              className="hover:text-[#00C896] transition-colors"
-            >
-              Skills
-            </button>
-            <button
-              onClick={() => scrollToSection("experience")}
-              className="hover:text-[#00C896] transition-colors"
-            >
-              Experience
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="hover:text-[#00C896] transition-colors"
-            >
-              Contact
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 hover:bg-[#E8E4DC]/50 rounded-lg transition-colors"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="overflow-hidden border-t border-[#1e2833] bg-[#0b0f14] md:hidden"
+            >
+              <div className="space-y-1 px-5 py-4">
+                {NAV.map(([id, label]) => (
+                  <button
+                    key={id}
+                    onClick={() => go(id)}
+                    className="f-mono block w-full rounded-md px-3 py-2 text-left text-sm text-[#8b97a6] hover:bg-[#141c25] hover:text-[#56e1c4]"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </nav>
+
+        {/* ── Hero ────────────────────────────────────────── */}
+        <header id="top" className="hero-glow relative mx-auto flex max-w-6xl flex-col items-center gap-10 px-5 pb-20 pt-32 sm:px-8 md:flex-row md:justify-between md:pt-40 lg:gap-16">
+          <div className="relative z-10 max-w-xl">
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="f-mono mb-5 text-sm text-[#56e1c4]"
+            >
+              {"// software engineer · backend & smart contracts"}
+            </motion.p>
+
+            <h1 className="f-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+              hi, I'm{" "}
+              <span className="text-[#56e1c4]">
+                <Typewriter text="Joe." />
+              </span>
+            </h1>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-6 max-w-lg text-base leading-relaxed text-[#8b97a6] sm:text-lg"
+            >
+              I'm a software engineer who builds{" "}
+              <span className="text-[#e6edf3]">backends and smart contracts</span>, mostly in
+              Solidity, Rust and TypeScript. These days most of my time goes to{" "}
+              <a href="https://railglide.xyz" target="_blank" rel="noreferrer" className="text-[#56e1c4] underline decoration-[#56e1c4]/30 underline-offset-4 hover:decoration-[#56e1c4]">
+                Railglide
+              </a>
+              , a non-custodial app for buying, selling and swapping stablecoins. I also break
+              contracts for bounties.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.65 }}
+              className="mt-9 flex flex-wrap items-center gap-3"
+            >
+              <a
+                href="https://docs.google.com/document/d/1424MX1R7vfn60v7Cv_YRkr-kCXOJVrPktdT7bjEBsjY/edit?usp=sharing"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-md border border-[#1e2833] px-5 py-2.5 f-mono text-sm text-[#e6edf3] transition-all hover:-translate-y-0.5 hover:border-[#56e1c4] hover:text-[#56e1c4]"
+              >
+                résumé
+              </a>
+              <a
+                href="mailto:joewigimbasin@gmail.com"
+                className="group flex items-center gap-2 rounded-md bg-[#56e1c4] px-5 py-2.5 f-mono text-sm font-medium text-[#04120e] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_rgba(86,225,196,0.6)]"
+              >
+                say hi
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            </motion.div>
+          </div>
+
+          <div className="relative z-10 flex shrink-0 items-center justify-center pb-6 md:-translate-y-10">
+            <AsciiPortrait src="/portraits/chrome.png" />
+          </div>
+        </header>
+
+        <div className="flex justify-center pb-8">
+          <button onClick={() => go("about")} className="f-mono flex flex-col items-center gap-1 text-xs text-[#8b97a6] transition-colors hover:text-[#56e1c4]">
+            scroll
+            <ChevronDown className="bounce-icon h-4 w-4" />
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#F7F5F0] border-t border-[#E8E4DC]"
-          >
-            <div className="px-4 py-6 space-y-4">
-              <button
-                onClick={() => scrollToSection("projects")}
-                className="block w-full text-left px-4 py-2 hover:bg-[#00C896]/10 rounded-lg transition-colors"
-              >
-                Projects
-              </button>
-              <button
-                onClick={() => scrollToSection("skills")}
-                className="block w-full text-left px-4 py-2 hover:bg-[#00C896]/10 rounded-lg transition-colors"
-              >
-                Skills
-              </button>
-              <button
-                onClick={() => scrollToSection("experience")}
-                className="block w-full text-left px-4 py-2 hover:bg-[#00C896]/10 rounded-lg transition-colors"
-              >
-                Experience
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="block w-full text-left px-4 py-2 hover:bg-[#00C896]/10 rounded-lg transition-colors"
-              >
-                Contact
-              </button>
+        <main className="mx-auto max-w-6xl px-5 sm:px-8">
+          {/* ── About ─────────────────────────────────────── */}
+          <Section id="about" label="/ about" title="a bit about me">
+            <div className="max-w-3xl space-y-4 text-[15px] leading-relaxed text-[#8b97a6]">
+              <p>
+                I studied Computer Engineering and have been around crypto for about six years,
+                three of those building in it full time. Most of my work is backend systems and
+                smart contracts, and I've shipped across{" "}
+                <span className="text-[#e6edf3]">Ethereum, Base, BNB Chain, Solana, Sui and Starknet</span>.
+              </p>
+              <p>
+                I like building the whole thing a protocol needs: contracts in Solidity, Rust or
+                Move, the Node services that index and monitor them, and a frontend that doesn't get
+                in the way. I also like breaking the things I build, whether that's auditing
+                contracts, writing Foundry fuzz tests, or chasing bounties.
+              </p>
+              <p>
+                Lately I've been exploring <span className="text-[#e6edf3]">AI</span> agents and RAG
+                systems with the same approach: build something, break it, figure out why it works,
+                and repeat.
+              </p>
+              <p>
+                Outside of that, I'm usually gaming, playing sport, or in the gym.
+              </p>
             </div>
-          </motion.div>
-        )}
-      </nav>
+          </Section>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-syne font-extrabold text-5xl sm:text-6xl lg:text-7xl xl:text-7xl mb-6 leading-tight"
-          >
-            Joseph Gimba
-          </motion.h1>
+          {/* ── Stack ─────────────────────────────────────── */}
+          <Section id="stack" label="/ stack" title="what I build with">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <StackGroup title="Smart Contracts" items={["Solidity", "Rust", "Move", "Noir", "Foundry"]} />
+              <StackGroup title="Backend" items={["TypeScript", "Node.js", "PostgreSQL", "Prisma", "REST", "GraphQL"]} />
+              <StackGroup title="Infrastructure" items={["Docker", "GitHub Actions", "AWS", "The Graph", "Tenderly"]} />
+              <StackGroup title="Security" items={["Foundry Fuzz", "Slither", "Echidna", "Aderyn"]} />
+              <StackGroup title="Chains" items={["Ethereum", "Base", "BNB Chain", "Solana", "Sui", "Starknet"]} />
+              <StackGroup title="Exploring" items={["LLM", "LangGraph", "Ollama", "ChromaDB"]} />
+            </div>
+          </Section>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl sm:text-2xl lg:text-3xl text-[#1A1A1A]/70 mb-12 max-w-3xl"
-          >
-            Blockchain & Backend Engineer
+          {/* ── Work ──────────────────────────────────────── */}
+          <Section id="work" label="/ work" title="things I've shipped">
+            {/* Screenshot carousel */}
+            <div className="mb-10">
+              <Spotlight />
+            </div>
+
+            {/* Featured projects */}
+            <div className="grid gap-5 sm:grid-cols-2">
+              <FeaturedCard
+                title="KhoopDeFi"
+                status="live · bnb chain"
+                statusColor="#56e1c4"
+                desc="A cycle-based payout protocol on BNB Chain with a strict FIFO queue. I built the payout system around constant-time slot processing to avoid unbounded iteration and keep gas usage predictable as the queue grows."
+                tags={["Solidity", "Gas-optimized", "BNB Chain"]}
+                primary={{ label: "live site", href: "https://khoop-defi.com/" }}
+              >
+                <div className="grid grid-cols-3 gap-3 border-t border-[#1e2833] pt-4">
+                  <MiniStat value="O(1)" label="slot processing" />
+                  <MiniStat value="FIFO" label="queue" />
+                  <MiniStat value="Predictable" label="gas costs" />
+                </div>
+              </FeaturedCard>
+
+              <FeaturedCard
+                title="Akio World NFT"
+                status="live on ethereum"
+                statusColor="#f6a94a"
+                desc="The minting stack behind an Ethereum NFT drop, including gas-optimized batch mints, delayed reveal, metadata infrastructure, and marketplace integration. The collection sold out."
+                tags={["Solidity", "ERC-721", "Ethereum"]}
+                primary={{ label: "visit site", href: "https://www.akioworld.com/" }}
+                secondary={{ label: "opensea", href: "https://opensea.io/collection/akioworld" }}
+              >
+                <div className="grid grid-cols-3 gap-3 border-t border-[#1e2833] pt-4">
+                  <MiniStat value="3,338" label="total mints" />
+                  <MiniStat value="0.025 ETH" label="mint price" />
+                  <MiniStat value="Sold out" label="collection" />
+                </div>
+              </FeaturedCard>
+            </div>
+
+            {/* More work */}
+            <p id="projects" className="scroll-mt-24 mb-5 mt-12 f-mono text-sm text-[#8b97a6]">
+              <span className="text-[#56e1c4]">//</span> more work
+            </p>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <ProjectCard
+                title="SolVault"
+                desc="An ERC-4626 style tokenized vault on Solana. Standard deposit, withdraw and redeem, with the yield accounting handled for you."
+                tags={["Solana", "Anchor", "Rust"]}
+                live="https://solvault-five.vercel.app/"
+                code="https://github.com/Joewizy/solvault-4626"
+              />
+              <ProjectCard
+                title="BlocklessFund"
+                desc="DAO crowdfunding with commit-reveal voting, so nobody sees your vote until it counts. Chainlink VRF releases the money once a goal is hit."
+                tags={["Solidity", "DAO", "Chainlink"]}
+                live="https://blockless-fund.vercel.app/"
+                code="https://github.com/Joewizy/BlocklessFund"
+              />
+              <ProjectCard
+                title="Shadow Dog"
+                desc="A 2D JavaScript game built on Monad testnet with gasless transactions, mainly to experiment with onchain interactions and fast transaction finality."
+                tags={["Vanilla JS", "Monad", "Privy"]}
+                live="https://japadog.netlify.app/"
+                code="https://github.com/Joewizy/Shadow-dog-game"
+              />
+            </div>
+          </Section>
+
+          {/* ── Now / exploring ───────────────────────────── */}
+          <Section id="now" label="/ now" title="what I'm exploring">
+            <div className="rounded-xl border border-[#1e2833] bg-[#10161d] p-6 sm:p-8">
+              <p className="text-[15px] leading-relaxed text-[#8b97a6]">
+                I'm exploring agentic systems with LangGraph, Ollama, Python and RAG. I'm mostly
+                interested in how agents use tools, hold context, retrieve information, and work
+                against real systems.
+              </p>
+              <p className="mt-4 text-[15px] leading-relaxed text-[#8b97a6]">
+                Right now I'm experimenting with agents for contract analysis, protocol monitoring,
+                technical retrieval, and developer tooling.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {["LangSmith", "LangGraph", "Ollama", "Python", "ChromaDB", "Pydantic", "FastAPI"].map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-md border border-[#1e2833] bg-[#0b0f14] px-2.5 py-1 f-mono text-xs text-[#8b97a6]"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Section>
+
+          {/* ── Experience ────────────────────────────────── */}
+          <Section id="experience" label="/ experience" title="where I've worked">
+            <Experience />
+          </Section>
+
+          {/* ── Open source ───────────────────────────────── */}
+          <Section id="open-source" label="/ open source" title="contributions">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+              {["SpotNet", "AutoSwappr", "DeRisk", "Boundless", "StarkMate", "Teamverse", "PredictX", "TrustLink", "SubTrackr", "Nestera"].map(
+                (name) => (
+                  <div
+                    key={name}
+                    className="rounded-md border border-[#1e2833] bg-[#10161d] px-3 py-4 text-center f-mono text-sm text-[#8b97a6] transition-all hover:-translate-y-1 hover:border-[#56e1c4]/40 hover:text-[#e6edf3]"
+                  >
+                    {name}
+                  </div>
+                )
+              )}
+            </div>
+          </Section>
+        </main>
+
+        {/* ── Contact ─────────────────────────────────────── */}
+        <section id="contact" className="mx-auto max-w-3xl px-5 py-28 text-center sm:px-8">
+          <motion.p {...reveal} className="section-label mb-4">
+            / contact
           </motion.p>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 max-w-4xl"
-          >
-            <StatCounter
-              end={6}
-              label="Years in Crypto"
-              suffix="+"
-              delay={0.4}
-            />
-            <StatCounter
-              end={30}
-              label="Open Source PRs"
-              suffix="+"
-              delay={0.5}
-            />
-            <StatCounter
-              end={7}
-              label="Shipped Projects"
-              suffix="+"
-              delay={0.6}
-            />
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="flex flex-wrap gap-4"
-          >
+          <motion.h2 {...reveal} className="f-display text-4xl font-bold tracking-tight sm:text-5xl">
+            let's build something onchain
+          </motion.h2>
+          <motion.p {...reveal} className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-[#8b97a6]">
+            I'm looking for full-time work and the occasional interesting contract. Got a hard
+            problem? I'll probably reply too fast.
+          </motion.p>
+          <motion.div {...reveal} className="mt-9 flex flex-wrap justify-center gap-3">
             <a
-              href="https://github.com/Joewizy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group px-6 py-3 bg-[#1A1A1A] text-[#F7F5F0] rounded-lg font-medium hover:bg-[#00C896] transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:-translate-y-0.5"
+              href="mailto:joewigimbasin@gmail.com"
+              className="group flex items-center gap-2 rounded-md bg-[#56e1c4] px-6 py-3 f-mono text-sm font-medium text-[#04120e] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_rgba(86,225,196,0.6)]"
             >
-              View GitHub
-              <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-            <a
-              href="https://docs.google.com/document/d/1424MX1R7vfn60v7Cv_YRkr-kCXOJVrPktdT7bjEBsjY/edit?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 border-2 border-[#1A1A1A] text-[#1A1A1A] rounded-lg font-medium hover:bg-[#1A1A1A] hover:text-[#F7F5F0] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-            >
-              View Resume
+              <Mail className="h-4 w-4" />
+              say hi
             </a>
           </motion.div>
-
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            onClick={() => scrollToSection("featured")}
-            className="mt-16 flex items-center gap-2 text-[#1A1A1A]/50 hover:text-[#00C896] transition-colors"
-          >
-            <span className="text-sm">Scroll to explore</span>
-            <ChevronDown className="bounce-icon w-4 h-4" />
-          </motion.button>
-        </div>
-      </section>
-
-      {/* Featured Project */}
-      <section id="featured" className="py-20 px-4 sm:px-6 lg:px-4">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl mb-8">
-              Featured Project
-            </h2>
+          <motion.div {...reveal} className="mt-8 flex justify-center gap-6 text-[#8b97a6]">
+            <Social href="https://github.com/Joewizy" icon={<Github className="h-5 w-5" />} label="GitHub" />
+            <Social href="https://www.linkedin.com/in/joseph-gimba-45b915306/" icon={<Linkedin className="h-5 w-5" />} label="LinkedIn" />
+            <Social href="https://www.twitter.com/Brucewayne82118" icon={<Twitter className="h-5 w-5" />} label="Twitter" />
+            <Social href="https://medium.com/@joewigimbasin" icon={<PenLine className="h-5 w-5" />} label="Medium" />
           </motion.div>
+        </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-          {/* Rail Glide */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative overflow-hidden bg-[#1A1A1A] rounded-2xl p-6 text-[#F7F5F0] hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col"
-          >
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#00C896]/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="relative flex items-start justify-between gap-4 mb-3">
-              <div className="flex-1 min-w-0">
-                <h3 className="font-syne font-bold text-2xl sm:text-3xl mb-1">
-                  Railglide
-                </h3>
-                <p className="text-[#F7F5F0]/60">
-                  AI-routed stablecoin transfers — describe it in plain
-                  language; swap, bridge, and cash out to bank or mobile money.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00C896]/15 border border-[#00C896]/30 rounded-full flex-shrink-0">
-                <span className="pulse-dot w-2 h-2 rounded-full bg-[#00C896]" />
-                <span className="text-xs text-[#00C896] font-medium">
-                  Open Source · Live
-                </span>
-              </div>
-            </div>
-
-            <div className="relative flex flex-wrap gap-3 mt-auto">
-              <a
-                href="https://railglide.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2 bg-[#00C896] text-[#1A1A1A] rounded-lg font-medium hover:bg-[#00C896]/90 transition-colors flex items-center gap-2 text-sm"
-              >
-                Launch App
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="https://github.com/Joewizy/Swap-Chain"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2 border border-white/20 text-white rounded-lg font-medium hover:bg-white/10 transition-colors flex items-center gap-2 text-sm"
-              >
-                <Github className="w-3.5 h-3.5" />
-                View Source
-              </a>
-            </div>
-          </motion.div>
-
-          {/* Akio World */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-[#1A1A1A] rounded-2xl p-6 text-[#F7F5F0] hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col"
-          >
-            <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
-              <div>
-                <h3 className="font-syne font-bold text-2xl sm:text-3xl mb-1">
-                  Akio World NFT
-                </h3>
-                <p className="text-[#F7F5F0]/60">
-                  Premium NFT collection on Ethereum
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FF6B35]/20 border border-[#FF6B35]/30 rounded-full">
-                <span className="text-xs text-[#FF6B35] font-medium">
-                  Live on Ethereum
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-3">
-              <div>
-                <div className="text-xl sm:text-2xl font-syne font-bold text-[#00C896] mb-1">
-                  3,338
-                </div>
-                <div className="text-[#F7F5F0]/60 text-xs sm:text-sm">
-                  Total Mints
-                </div>
-              </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-syne font-bold text-[#00C896] mb-1">
-                  0.025 ETH
-                </div>
-                <div className="text-[#F7F5F0]/60 text-xs sm:text-sm">
-                  Mint Price
-                </div>
-              </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-syne font-bold text-[#00C896] mb-1">
-                  $330K+
-                </div>
-                <div className="text-[#F7F5F0]/60 text-xs sm:text-sm">
-                  Total Volume
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-3 mt-auto">
-              <a
-                href="https://www.akioworld.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2 bg-[#00C896] text-[#1A1A1A] rounded-lg font-medium hover:bg-[#00C896]/90 transition-colors flex items-center gap-2 text-sm"
-              >
-                Visit Website
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="https://opensea.io/collection/akioworld"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2 border border-white/20 text-white rounded-lg font-medium hover:bg-white/10 transition-colors flex items-center gap-2 text-sm"
-              >
-                View on OpenSea
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </motion.div>
-        </div>
-        </div>
-      </section>
-
-      {/* Projects Grid */}
-      <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl mb-8">
-              Projects
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ProjectCard
-              title="KhoopDefi"
-              description="Onchain FIFO queue with O(1) slot processing and automated cycle distribution. Live on BNB Chain."
-              tags={["Solidity", "BNB Chain", "FIFO Queue", "DeFi"]}
-              liveUrl="https://khoop-defi.com/"
-              index={1}
-            />
-            <ProjectCard
-              title="SolVault ERC-4626"
-              description="ERC-4626 tokenized vault implementation on Solana. Standardized deposit/withdraw/redeem interface with automated yield accounting and position tracking. Live on Solana."
-              tags={["Solana", "Anchor", "Vaults", "Rust"]}
-              liveUrl="https://solvault-five.vercel.app/"
-              githubUrl="https://github.com/Joewizy/solvault-4626"
-              index={8}
-            />
-            <ProjectCard
-              title="SolStruct"
-              description="Rust CLI that scaffolds production-ready Solidity contracts 
-              enforcing security best practices and industry-standard code layout. 
-              ERC standards and minimal templates via OpenZeppelin."
-              tags={["Rust", "CLI", "ERC20", "Security Patterns"]}
-              githubUrl="https://github.com/Joewizy/solStruct"
-              index={4}
-            />
-            <ProjectCard
-              title="BlocklessFund"
-              description="DAO crowdfunding with commit-reveal voting and Chainlink VRF for automated fund releases when campaign goals are met."
-              tags={["Solidity", "DAO", "Chainlink",]}
-              liveUrl="https://blockless-fund.vercel.app/"
-              githubUrl="https://github.com/Joewizy/BlocklessFund"
-              index={5}
-            />
-            <ProjectCard
-              title="Trade Barter"
-              description="Decentralized P2P crypto-to-fiat exchange on Sui blockchain a trustless escrow system with AI-powered dispute resolution."
-              tags={["Move", "Sui", "Escrow", "AI", "P2P"]}
-              liveUrl="https://trade-barter-ten.vercel.app/"
-              githubUrl="https://github.com/Joewizy/Decentralized-P2P-System"
-              index={6}
-            />
-           <ProjectCard
-              title="Shadow Dog"
-              description="Monad testnet game with gasless transactions, Privy auth, and vanilla JS/CSS architecture to stress-test sub-second finality."
-              tags={["Monad", "Privy", "Vanilla JS", "AA"]}
-              liveUrl="https://japadog.netlify.app/"
-              index={2}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Skills */}
-      <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl mb-8">
-              Skills & Expertise
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <SkillGroup
-              title="Smart Contract Development"
-              skills={["Solidity", "Rust", "Move", "Foundry", "Hardhat", "EVM"]}
-              color="#00C896"
-              index={0}
-            />
-            <SkillGroup
-              title="Security & Auditing"
-              skills={["Slither", "Echidna", "Aderyn", "Certora"]}
-              color="#FF6B35"
-              index={1}
-            />
-            <SkillGroup
-              title="Chains"
-              skills={["Ethereum", "Solana", "Sui", "Starknet", "BNB Chain"]}
-              color="#00C896"
-              index={2}
-            />
-            <SkillGroup
-              title="Full-Stack & Infra"
-              skills={["Next.js", "React", "TypeScript", "Node.js", "PostgreSQL", "Docker"]}
-              color="#FF6B35"
-              index={3}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Experience Timeline */}
-      <section id="experience" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl mb-8">
-              Experience
-            </h2>
-          </motion.div>
-
-          <div className="space-y-8 max-w-4xl">
-            <ExperienceItem
-              company="DeFi Lords"
-              role="Blockchain Developer"
-              period="Aug 2024 – Present"
-              isCurrent={true}
-              index={0}
-            />
-            <ExperienceItem
-              company="NITDA"
-              role="Blockchain Developer & Educator"
-              period="Mar 2024 – 2025"
-              isCurrent={false}
-              index={1}
-            />
-            <ExperienceItem
-              company="Freelance Contractor"
-              role="Smart Contract Engineer"
-              period="2023 – Present"
-              isCurrent={true}
-              index={2}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Open Source */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl mb-8">
-              Open Source Contributions
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {[
-              "SpotNet",
-              "AutoSwappr",
-              "DeRisk",
-              "Boundless",
-              "StarkMate",
-              "Stellar Insights",
-            ].map((project, index) => (
-              <motion.div
-                key={project}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="p-4 border border-[#E8E4DC] rounded-lg text-center hover:border-[#00C896] hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-[#F7F5F0]"
-              >
-                <div className="text-sm font-medium">{project}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-syne font-bold text-4xl sm:text-5xl lg:text-6xl mb-6">
-              Let's build secure, scalable solutions
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <SocialLink
-              href="https://github.com/Joewizy"
-              icon={<Github className="w-5 h-5" />}
-              label="GitHub"
-            />
-            <SocialLink
-              href="https://www.linkedin.com/in/joseph-gimba-45b915306/"
-              icon={<Linkedin className="w-5 h-5" />}
-              label="LinkedIn"
-            />
-            <SocialLink
-              href="https://www.twitter.com/Brucewayne82118"
-              icon={<Twitter className="w-5 h-5" />}
-              label="Twitter"
-            />
-            <SocialLink
-              href="https://medium.com/@joewigimbasin"
-              icon={<Send className="w-5 h-5" />}
-              label="Medium"
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-[#E8E4DC]">
-        <div className="max-w-7xl mx-auto text-center text-sm text-[#1A1A1A]/50">
-          <p>© 2026 Joseph Gimba. Built with React & Tailwind CSS.</p>
-        </div>
-      </footer>
-
-      <style jsx global>{`
-        .font-syne {
-          font-family: 'Syne', sans-serif;
-        }
-        
-        .font-dm-mono {
-          font-family: 'DM Mono', monospace;
-        }
-
-        html {
-          scroll-behavior: smooth;
-        }
-
-        .pulse-dot {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.5;
-          }
-        }
-
-        .bounce-icon {
-          animation: bounce 1s infinite;
-        }
-        @keyframes bounce {
-          0%, 100% {
-            transform: translateY(-25%);
-            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-          }
-          50% {
-            transform: translateY(0);
-            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-          }
-        }
-      `}</style>
+        <footer className="border-t border-[#1e2833] py-8 text-center">
+          <p className="f-mono text-xs text-[#8b97a6]">
+            designed & built by Joseph Gimba · <span className="text-[#56e1c4]">2026</span>
+          </p>
+        </footer>
+      </div>
     </div>
   );
 }
 
-// Counter Component
-function StatCounter({ end, label, prefix = "", suffix = "", delay = 0 }) {
-  const [count, setCount] = useState(0);
+/* ── Building blocks ─────────────────────────────────── */
 
-  useEffect(() => {
-    const duration = 2000;
-    const steps = 60;
-    const increment = end / steps;
-    let current = 0;
-
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-
-    return () => clearInterval(timer);
-  }, [end]);
-
+function Section({ id, label, title, children }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay }}
-      className="p-6 border border-[#E8E4DC] rounded-xl hover:border-[#00C896] transition-colors bg-white/50"
-    >
-      <div className="text-3xl sm:text-4xl font-syne font-bold text-[#00C896] mb-2">
-        {prefix}
-        {count}
-        {suffix}
-      </div>
-      <div className="text-sm text-[#1A1A1A]/60">{label}</div>
-    </motion.div>
+    <section id={id} className="scroll-mt-24 py-16 sm:py-24">
+      <motion.div {...reveal} className="mb-9 flex items-baseline gap-4">
+        <h2 className="f-display whitespace-nowrap text-2xl font-bold tracking-tight sm:text-3xl">
+          <span className="section-label mr-2">{label}</span>
+          {title}
+        </h2>
+        <span className="h-px w-full max-w-xs bg-[#1e2833]" />
+      </motion.div>
+      <motion.div {...reveal}>{children}</motion.div>
+    </section>
   );
 }
 
-// Project Card Component
-function ProjectCard({ title, description, tags, liveUrl, githubUrl, index }) {
+function MiniStat({ value, label }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group p-6 border border-[#E8E4DC] rounded-xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white/80"
-    >
-      <h3 className="font-syne font-bold text-2xl mb-3 group-hover:text-[#00C896] transition-colors">
-        {title}
-      </h3>
-      <p className="text-[#1A1A1A]/70 mb-4">{description}</p>
-
-      <div className="flex flex-wrap gap-2 mb-6">
-        {tags.map((tag) => (
-          <span
-            key={tag}
-            className="px-3 py-1 bg-[#00C896]/10 text-[#00C896] text-xs rounded-full font-medium"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <div className="flex gap-3">
-        {liveUrl && (
-          <a
-            href={liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-[#1A1A1A] text-[#F7F5F0] rounded-lg text-sm font-medium hover:bg-[#00C896] transition-colors flex items-center gap-2"
-          >
-            Live Website
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        )}
-        {githubUrl && (
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 border border-[#E8E4DC] rounded-lg text-sm font-medium hover:border-[#1A1A1A] transition-colors flex items-center gap-2"
-          >
-            <Github className="w-3 h-3" />
-            Code
-          </a>
-        )}
-      </div>
-    </motion.div>
+    <div>
+      <div className="f-display text-lg font-bold text-[#56e1c4]">{value}</div>
+      <div className="f-mono text-[0.65rem] text-[#8b97a6]">{label}</div>
+    </div>
   );
 }
 
-// Skill Group Component
-function SkillGroup({ title, skills, color, index }) {
+function StackGroup({ title, items }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="p-5 border border-[#E8E4DC] rounded-xl bg-white/80"
-    >
-      <h3 className="font-syne font-bold text-lg mb-4" style={{ color }}>
-        {title}
+    <div className="rounded-lg border border-[#1e2833] bg-[#10161d] p-5">
+      <h3 className="f-mono mb-4 text-sm font-medium text-[#e6edf3]">
+        <span className="text-[#56e1c4]">#</span> {title}
       </h3>
       <div className="flex flex-wrap gap-2">
-        {skills.map((skill) => (
+        {items.map((i) => (
           <span
-            key={skill}
-            className="px-3 py-1.5 bg-[#F7F5F0] border border-[#E8E4DC] 
-            rounded-full text-sm hover:border-[#00C896] hover:text-[#00C896] 
-            transition-colors cursor-default"
+            key={i}
+            className="rounded-md border border-[#1e2833] bg-[#0b0f14] px-2.5 py-1 f-mono text-xs text-[#8b97a6] transition-colors hover:border-[#56e1c4]/40 hover:text-[#56e1c4]"
           >
-            {skill}
+            {i}
           </span>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// Experience Item Component
-function ExperienceItem({ company, role, period, isCurrent, index }) {
+function FeaturedCard({ title, status, statusColor, desc, tags, primary, secondary, children }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="flex gap-4 group"
-    >
-      <div className="flex flex-col items-center">
-        <div
-          className={`w-4 h-4 rounded-full border-2 ${
-            isCurrent
-              ? "bg-[#00C896] border-[#00C896] shadow-lg shadow-[#00C896]/50"
-              : "bg-[#F7F5F0] border-[#E8E4DC]"
-          }`}
-        ></div>
-        <div className="w-0.5 h-full bg-[#E8E4DC] mt-2"></div>
+    <div className="folder-card flex flex-col p-6">
+      <div className="mb-3 flex items-start justify-between gap-4">
+        <h3 className="f-display text-2xl font-bold tracking-tight">{title}</h3>
+        <span
+          className="flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 f-mono text-[0.65rem]"
+          style={{ color: statusColor, borderColor: `${statusColor}55`, background: `${statusColor}14` }}
+        >
+          <span className="pulse-dot h-1.5 w-1.5 rounded-full" style={{ background: statusColor }} />
+          {status}
+        </span>
       </div>
+      <p className="mb-4 text-sm leading-relaxed text-[#8b97a6]">{desc}</p>
+      {children}
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {tags.map((t) => (
+          <span key={t} className="f-mono text-[0.7rem] text-[#56e1c4]">
+            {t}
+          </span>
+        ))}
+      </div>
+      <div className="mt-5 flex gap-3">
+        <a
+          href={primary.href}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-1.5 rounded-md bg-[#56e1c4] px-4 py-2 f-mono text-xs font-medium text-[#04120e] transition-colors hover:bg-[#56e1c4]/90"
+        >
+          {primary.label}
+          <ArrowUpRight className="h-3.5 w-3.5" />
+        </a>
+        {secondary && (
+          <a
+            href={secondary.href}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1.5 rounded-md border border-[#1e2833] px-4 py-2 f-mono text-xs text-[#e6edf3] transition-colors hover:border-[#56e1c4] hover:text-[#56e1c4]"
+          >
+            <Github className="h-3.5 w-3.5" />
+            {secondary.label}
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
 
-      <div className="pb-8 flex-1">
-        <div className="flex flex-wrap items-center gap-3 mb-2">
-          <h3 className="font-syne font-bold text-xl group-hover:text-[#00C896] transition-colors">
-            {company}
-          </h3>
-          {isCurrent && (
-            <span className="px-3 py-1 bg-[#00C896]/10 text-[#00C896] text-xs rounded-full font-medium">
-              CURRENT
-            </span>
+function ProjectCard({ title, desc, tags, live, code }) {
+  const href = live || code;
+  return (
+    <div className="folder-card group flex flex-col p-5">
+      <div className="mb-4 flex items-center justify-between">
+        <Folder className="h-8 w-8 text-[#56e1c4]" strokeWidth={1.4} />
+        <div className="flex items-center gap-3 text-[#8b97a6]">
+          {code && (
+            <a href={code} target="_blank" rel="noreferrer" className="transition-colors hover:text-[#56e1c4]" aria-label={`${title} source`}>
+              <Github className="h-[18px] w-[18px]" />
+            </a>
+          )}
+          {live && (
+            <a href={live} target="_blank" rel="noreferrer" className="transition-colors hover:text-[#56e1c4]" aria-label={`${title} live`}>
+              <ArrowUpRight className="h-[18px] w-[18px]" />
+            </a>
           )}
         </div>
-        <p className="text-[#1A1A1A]/70 mb-1">{role}</p>
-        <p className="text-sm text-[#1A1A1A]/50">{period}</p>
       </div>
-    </motion.div>
+      <a href={href} target="_blank" rel="noreferrer" className="f-display mb-2 text-lg font-bold tracking-tight transition-colors group-hover:text-[#56e1c4]">
+        {title}
+      </a>
+      <p className="mb-5 flex-1 text-sm leading-relaxed text-[#8b97a6]">{desc}</p>
+      <div className="flex flex-wrap gap-x-3 gap-y-1">
+        {tags.map((t) => (
+          <span key={t} className="f-mono text-[0.7rem] text-[#8b97a6]">
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
-// Social Link Component
-function SocialLink({ href, icon, label }) {
+const JOBS = [
+  {
+    org: "DeFi Lords",
+    title: "Lead Smart Contract Engineer",
+    period: "Aug 2025 — May 2026",
+    bullets: [
+      "Led a borrowing and lending protocol with vaults and liquidation systems.",
+      "Built AI rebalancer vaults with DeFi integrations across Aave, Morpho and others for automated yield.",
+      "Built the backend and indexer for protocol monitoring, strategy execution and real-time tracking.",
+    ],
+  },
+  {
+    org: "NITDA",
+    title: "Blockchain Developer & Educator",
+    period: "Mar 2024 — 2025",
+    bullets: [
+      "Led Solidity development and tuned contracts for gas and security, cutting transaction costs by about 30%.",
+      "Ran training that got teams comfortable building and shipping smart contracts.",
+    ],
+  },
+  {
+    org: "Freelance",
+    title: "Software Engineer",
+    period: "2021 — Present",
+    bullets: [
+      "Built websites and full-stack web apps for clients, front-ends plus the Node and backends behind them.",
+      "Did blockchain work too: NFT marketplaces, real-estate tokenization, and gasless transactions.",
+    ],
+  },
+  {
+    org: "Khemsafe",
+    title: "Intern",
+    period: "2021",
+    bullets: [
+      "Web development and network administration; supported hardware and software maintenance.",
+      "Worked on Arduino / Raspberry Pi automation projects.",
+    ],
+  },
+];
+
+function Experience() {
+  const [active, setActive] = useState(0);
+  const job = JOBS[active];
+  return (
+    <div className="flex flex-col gap-6 md:flex-row md:gap-8">
+      <div className="flex overflow-x-auto md:flex-col">
+        {JOBS.map((j, i) => (
+          <button
+            key={j.org}
+            onClick={() => setActive(i)}
+            className={`tab-btn ${active === i ? "tab-btn--active" : ""}`}
+          >
+            {j.org}
+          </button>
+        ))}
+      </div>
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="flex-1"
+      >
+        <h3 className="f-display text-xl font-bold">
+          {job.title} <span className="text-[#56e1c4]">@ {job.org}</span>
+        </h3>
+        <p className="mt-1 f-mono text-xs text-[#8b97a6]">{job.period}</p>
+        <ul className="mt-4 space-y-2.5">
+          {job.bullets.map((b, i) => (
+            <li key={i} className="flex gap-3 text-sm leading-relaxed text-[#8b97a6]">
+              <span className="mt-1 shrink-0 text-[#56e1c4]">▹</span>
+              {b}
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    </div>
+  );
+}
+
+function Social({ href, icon, label }) {
   return (
     <a
       href={href}
       target="_blank"
-      rel="noopener noreferrer"
-      className="px-6 py-3 border-2 border-[#1A1A1A] rounded-lg font-medium hover:bg-[#1A1A1A] hover:text-[#F7F5F0] transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:-translate-y-0.5"
+      rel="noreferrer"
+      aria-label={label}
+      className="transition-all hover:-translate-y-0.5 hover:text-[#56e1c4]"
     >
       {icon}
-      {label}
     </a>
   );
 }
