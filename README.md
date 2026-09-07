@@ -1,10 +1,14 @@
 # Joseph Gimba — Portfolio
 
-My personal site. Software engineer working on backends and smart contracts.
+My personal site. Software engineer building backend systems, AI agents, and blockchain infrastructure.
 
 Live at https://joewizy.github.io/
 
 ## Stack
+
+**Languages:** JavaScript, TypeScript, Python, Rust, Solidity, Move, Cairo
+
+**Focus:** Backend systems, AI agents (LangGraph, RAG), and blockchain infrastructure — shipping secure, production-grade software end to end.
 
 - React 19 + Vite
 - Tailwind CSS (via PostCSS)

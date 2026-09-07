@@ -119,7 +119,7 @@ export default function Portfolio() {
               transition={{ duration: 0.5 }}
               className="f-mono mb-5 text-sm text-[#56e1c4]"
             >
-              {"// software engineer · backend & smart contracts"}
+              {"// software engineer · backend, AI & blockchain"}
             </motion.p>
 
             <h1 className="f-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
@@ -135,14 +135,14 @@ export default function Portfolio() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="mt-6 max-w-lg text-base leading-relaxed text-[#8b97a6] sm:text-lg"
             >
-              I'm a software engineer who builds{" "}
-              <span className="text-[#e6edf3]">backends and smart contracts</span>, mostly in
-              Solidity, Rust and TypeScript. These days most of my time goes to{" "}
+              I'm a software engineer building{" "}
+              <span className="text-[#e6edf3]">backend systems, AI agents, and blockchain infrastructure</span>.
+              I ship secure, scalable systems end to end. I built{" "}
               <a href="https://railglide.xyz" target="_blank" rel="noreferrer" className="text-[#56e1c4] underline decoration-[#56e1c4]/30 underline-offset-4 hover:decoration-[#56e1c4]">
                 Railglide
               </a>
-              , a non-custodial app for buying, selling and swapping stablecoins. I also break
-              contracts for bounties.
+              , an AI-routed app for crypto and fiat transfers. I also contribute to open source and
+              audit smart contracts.
             </motion.p>
 
             <motion.div
@@ -151,14 +151,6 @@ export default function Portfolio() {
               transition={{ duration: 0.6, delay: 0.65 }}
               className="mt-9 flex flex-wrap items-center gap-3"
             >
-              <a
-                href="https://docs.google.com/document/d/1424MX1R7vfn60v7Cv_YRkr-kCXOJVrPktdT7bjEBsjY/edit?usp=sharing"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-md border border-[#1e2833] px-5 py-2.5 f-mono text-sm text-[#e6edf3] transition-all hover:-translate-y-0.5 hover:border-[#56e1c4] hover:text-[#56e1c4]"
-              >
-                résumé
-              </a>
               <a
                 href="mailto:joewigimbasin@gmail.com"
                 className="group flex items-center gap-2 rounded-md bg-[#56e1c4] px-5 py-2.5 f-mono text-sm font-medium text-[#04120e] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_rgba(86,225,196,0.6)]"
@@ -186,21 +178,20 @@ export default function Portfolio() {
           <Section id="about" label="/ about" title="a bit about me">
             <div className="max-w-3xl space-y-4 text-[15px] leading-relaxed text-[#8b97a6]">
               <p>
-                I studied Computer Engineering and have been around crypto for about six years,
-                three of those building in it full time. Most of my work is backend systems and
-                smart contracts, and I've shipped across{" "}
-                <span className="text-[#e6edf3]">Ethereum, Base, BNB Chain, Solana, Sui and Starknet</span>.
+                I've been building products since 2021, starting with web development before growing
+                into backend systems, blockchain infrastructure, AI applications, and AI agents. My
+                Computer Engineering background gives me a practical, systems-first approach to each.
               </p>
               <p>
-                I like building the whole thing a protocol needs: contracts in Solidity, Rust or
-                Move, the Node services that index and monitor them, and a frontend that doesn't get
-                in the way. I also like breaking the things I build, whether that's auditing
-                contracts, writing Foundry fuzz tests, or chasing bounties.
+                I like owning a system end to end: APIs and services in TypeScript or Python, AI
+                workflows that use tools and retrieval, blockchain infrastructure in Solidity, Rust
+                or Move, and frontends that stay out of the way. I also build security in from the
+                start through auditing, fuzz testing, and careful system design.
               </p>
               <p>
-                Lately I've been exploring <span className="text-[#e6edf3]">AI</span> agents and RAG
-                systems with the same approach: build something, break it, figure out why it works,
-                and repeat.
+                My current AI work focuses on <span className="text-[#e6edf3]">LLM agents and RAG
+                systems</span>. I approach them the same way I approach everything else: build,
+                test, understand, and improve.
               </p>
               <p>
                 Outside of that, I'm usually gaming, playing sport, or in the gym.
@@ -211,12 +202,12 @@ export default function Portfolio() {
           {/* ── Stack ─────────────────────────────────────── */}
           <Section id="stack" label="/ stack" title="what I build with">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <StackGroup title="Smart Contracts" items={["Solidity", "Rust", "Move", "Noir", "Foundry"]} />
-              <StackGroup title="Backend" items={["TypeScript", "Node.js", "PostgreSQL", "Prisma", "REST", "GraphQL"]} />
+              <StackGroup title="Backend" items={["JavaScript", "TypeScript", "Python", "Node.js", "PostgreSQL", "REST"]} />
+              <StackGroup title="AI Agents" items={["LangGraph", "RAG", "Python", "FastAPI", "ChromaDB", "Pydantic"]} />
+              <StackGroup title="Blockchain" items={["Solidity", "Rust", "Move", "Cairo", "Noir", "Foundry"]} />
               <StackGroup title="Infrastructure" items={["Docker", "GitHub Actions", "AWS", "The Graph", "Tenderly"]} />
               <StackGroup title="Security" items={["Foundry Fuzz", "Slither", "Echidna", "Aderyn"]} />
               <StackGroup title="Chains" items={["Ethereum", "Base", "BNB Chain", "Solana", "Sui", "Starknet"]} />
-              <StackGroup title="Exploring" items={["LLM", "LangGraph", "Ollama", "ChromaDB"]} />
             </div>
           </Section>
 
@@ -229,6 +220,21 @@ export default function Portfolio() {
 
             {/* Featured projects */}
             <div className="grid gap-5 sm:grid-cols-2">
+              <FeaturedCard
+                title="Football Agent"
+                status="open source · AI"
+                statusColor="#a78bfa"
+                desc="A local-first football research agent that routes questions between live REST data and RAG retrieval. I built the LangGraph state machine, tool-calling workflow, persistent SQLite memory, and explicit failure states that reduce hallucinations on ambiguous requests."
+                tags={["Python", "LangGraph", "FastAPI", "RAG", "ChromaDB"]}
+                primary={{ label: "view source", href: "https://github.com/Joewizy/football-agent" }}
+              >
+                <div className="grid grid-cols-3 gap-3 border-t border-[#1e2833] pt-4">
+                  <MiniStat value="REST + RAG" label="data routing" />
+                  <MiniStat value="LangGraph" label="agent workflow" />
+                  <MiniStat value="SQLite" label="persistent memory" />
+                </div>
+              </FeaturedCard>
+
               <FeaturedCard
                 title="KhoopDeFi"
                 status="live · bnb chain"
@@ -244,21 +250,6 @@ export default function Portfolio() {
                 </div>
               </FeaturedCard>
 
-              <FeaturedCard
-                title="Akio World NFT"
-                status="live on ethereum"
-                statusColor="#f6a94a"
-                desc="The minting stack behind an Ethereum NFT drop, including gas-optimized batch mints, delayed reveal, metadata infrastructure, and marketplace integration. The collection sold out."
-                tags={["Solidity", "ERC-721", "Ethereum"]}
-                primary={{ label: "visit site", href: "https://www.akioworld.com/" }}
-                secondary={{ label: "opensea", href: "https://opensea.io/collection/akioworld" }}
-              >
-                <div className="grid grid-cols-3 gap-3 border-t border-[#1e2833] pt-4">
-                  <MiniStat value="3,338" label="total mints" />
-                  <MiniStat value="0.025 ETH" label="mint price" />
-                  <MiniStat value="Sold out" label="collection" />
-                </div>
-              </FeaturedCard>
             </div>
 
             {/* More work */}
@@ -267,18 +258,18 @@ export default function Portfolio() {
             </p>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               <ProjectCard
-                title="SolVault"
-                desc="An ERC-4626 style tokenized vault on Solana. Standard deposit, withdraw and redeem, with the yield accounting handled for you."
-                tags={["Solana", "Anchor", "Rust"]}
-                live="https://solvault-five.vercel.app/"
-                code="https://github.com/Joewizy/solvault-4626"
-              />
-              <ProjectCard
                 title="BlocklessFund"
                 desc="DAO crowdfunding with commit-reveal voting, so nobody sees your vote until it counts. Chainlink VRF releases the money once a goal is hit."
                 tags={["Solidity", "DAO", "Chainlink"]}
                 live="https://blockless-fund.vercel.app/"
                 code="https://github.com/Joewizy/BlocklessFund"
+              />
+              <ProjectCard
+                title="Akio World NFT"
+                desc="The minting stack behind a sold-out Ethereum NFT drop, including gas-optimized batch mints, delayed reveal, metadata infrastructure, and marketplace integration."
+                tags={["Solidity", "ERC-721", "Ethereum"]}
+                live="https://www.akioworld.com/"
+                code="https://opensea.io/collection/akioworld"
               />
               <ProjectCard
                 title="Shadow Dog"
@@ -291,10 +282,10 @@ export default function Portfolio() {
           </Section>
 
           {/* ── Now / exploring ───────────────────────────── */}
-          <Section id="now" label="/ now" title="what I'm exploring">
+          <Section id="now" label="/ now" title="what I'm learning and building">
             <div className="rounded-xl border border-[#1e2833] bg-[#10161d] p-6 sm:p-8">
               <p className="text-[15px] leading-relaxed text-[#8b97a6]">
-                I'm exploring agentic systems with LangGraph, Ollama, Python and RAG. I'm mostly
+                I'm building agentic systems with LangGraph, Ollama, Python and RAG. I'm especially
                 interested in how agents use tools, hold context, retrieve information, and work
                 against real systems.
               </p>
@@ -343,11 +334,11 @@ export default function Portfolio() {
             / contact
           </motion.p>
           <motion.h2 {...reveal} className="f-display text-4xl font-bold tracking-tight sm:text-5xl">
-            let's build something onchain
+            let's build something useful
           </motion.h2>
           <motion.p {...reveal} className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-[#8b97a6]">
-            I'm looking for full-time work and the occasional interesting contract. Got a hard
-            problem? I'll probably reply too fast.
+            I'm looking for opportunities to build production software across backend, AI, and
+            blockchain. Got a hard problem? I'll probably reply too fast.
           </motion.p>
           <motion.div {...reveal} className="mt-9 flex flex-wrap justify-center gap-3">
             <a
